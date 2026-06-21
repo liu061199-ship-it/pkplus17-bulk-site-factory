@@ -1,0 +1,8 @@
+.next
+node_modules
+out
+output/*
+!output/.gitkeep
+.env
+.env.local
+*.log
