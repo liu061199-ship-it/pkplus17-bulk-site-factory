@@ -17,6 +17,8 @@ function jsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
+const lastModified = "2026-06-22";
+
 export function keywordSlug(keyword: string) {
   return keyword
     .toLowerCase()
@@ -39,10 +41,67 @@ function keywordClusterSection(site: SiteConfig) {
     </section>`;
 }
 
-function layout(site: SiteConfig, path: string, body: string, pageTitle = site.title, pageDescription = site.description) {
+function breadcrumbSchema(site: SiteConfig, path: string, pageTitle: string) {
+  const baseUrl = `https://${site.domain}`;
+  const items = [
+    { "@type": "ListItem", position: 1, name: site.siteName, item: baseUrl }
+  ];
+
+  if (path !== "/") {
+    items.push({ "@type": "ListItem", position: 2, name: pageTitle, item: `${baseUrl}${path}` });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items
+  };
+}
+
+function faqSchema(items: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer
+      }
+    }))
+  };
+}
+
+function layout(
+  site: SiteConfig,
+  path: string,
+  body: string,
+  pageTitle = site.title,
+  pageDescription = site.description,
+  extraSchemas: unknown[] = []
+) {
   const baseUrl = `https://${site.domain}`;
   const canonical = `${baseUrl}${path}`;
   const authUrl = site.authUrl || site.downloadUrl;
+  const schemas = [
+    {
+      "@context": "https://schema.org",
+      "@type": "MobileApplication",
+      name: site.siteName,
+      operatingSystem: "Android",
+      applicationCategory: "GameApplication",
+      softwareVersion: site.appVersion,
+      fileSize: site.appSize,
+      dateModified: lastModified,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
+      url: baseUrl,
+      description: pageDescription
+    },
+    breadcrumbSchema(site, path, pageTitle),
+    ...extraSchemas
+  ];
+
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -52,6 +111,7 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
   <meta name="description" content="${escapeHtml(pageDescription)}" />
   <meta name="keywords" content="${escapeHtml(site.keywords.join(", "))}" />
   <meta name="robots" content="index, follow" />
+  <meta name="last-modified" content="${lastModified}" />
   <meta property="og:title" content="${escapeHtml(pageTitle)}" />
   <meta property="og:description" content="${escapeHtml(pageDescription)}" />
   <meta property="og:type" content="article" />
@@ -60,18 +120,7 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="canonical" href="${canonical}" />
   <link rel="icon" href="${escapeHtml(site.logo)}" />
-  <script type="application/ld+json">${jsonLd({
-    "@context": "https://schema.org",
-    "@type": "MobileApplication",
-    name: site.siteName,
-    operatingSystem: "Android",
-    applicationCategory: "GameApplication",
-    softwareVersion: site.appVersion,
-    fileSize: site.appSize,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "PKR" },
-    url: baseUrl,
-    description: pageDescription
-  })}</script>
+  <script type="application/ld+json">${jsonLd(schemas)}</script>
   <style>
     :root { --brand: ${site.themeColor}; --ink: #10141f; --muted: #5b6475; --line: #dfe5ef; --soft: #f4f7fb; }
     * { box-sizing: border-box; }
@@ -110,6 +159,8 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
     .split { display: grid; grid-template-columns: minmax(0, 1.1fr) 320px; gap: 18px; align-items: start; }
     .card { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 20px; }
+    .content-list { display: grid; gap: 12px; padding-left: 20px; color: var(--muted); line-height: 1.7; font-size: 17px; }
+    .content-list li strong { color: var(--ink); }
     .pill { display: inline-flex; padding: 7px 10px; border-radius: 999px; background: var(--soft); color: var(--muted); font-size: 13px; font-weight: 800; }
     .score { font-size: 44px; font-weight: 900; color: var(--brand); line-height: 1; }
     .timeline { display: grid; gap: 12px; border-left: 3px solid var(--brand); padding-left: 18px; }
@@ -193,6 +244,38 @@ function featureCards(site: SiteConfig) {
   return site.featureBullets.map((feature) => `<div class="card"><h3>${escapeHtml(feature)}</h3><p>${escapeHtml(site.siteName)} content is structured for Pakistan search intent and fast mobile reading.</p></div>`).join("");
 }
 
+function localIntentSection(site: SiteConfig) {
+  return `<section class="band">
+      <h2>Pakistan User Checklist</h2>
+      <ul class="content-list">
+        <li><strong>APK details:</strong> confirm version ${escapeHtml(site.appVersion)}, file size ${escapeHtml(site.appSize)}, Android compatibility, and source before installing.</li>
+        <li><strong>Account setup:</strong> prepare a mobile number, choose a secure password, save login details, and review verification prompts carefully.</li>
+        <li><strong>Payment context:</strong> compare ${escapeHtml(site.paymentMethods.join(", "))} and check current limits, timing, and wallet details inside the app.</li>
+        <li><strong>Bonus terms:</strong> read promotion dates, eligibility, turnover terms, and withdrawal rules before expecting rewards.</li>
+        <li><strong>Safety:</strong> avoid random APK mirrors, keep app updates current, and never share account credentials with third parties.</li>
+      </ul>
+    </section>`;
+}
+
+function articleExpansion(site: SiteConfig, article: Article) {
+  return `<section class="band">
+      <h2>What This Guide Covers</h2>
+      <p>${escapeHtml(article.title)} is written for Pakistan users comparing ${escapeHtml(site.siteName)} information before registration, download, deposit, or update decisions. The goal is to keep the page practical: first explain the user intent, then show the checks that matter before clicking any app or payment button.</p>
+      <div class="grid">
+        <div class="card"><h3>Before You Start</h3><p>Check the app name, domain, APK version, and file size. If the information does not match the expected ${escapeHtml(site.siteName)} details, pause and verify again.</p></div>
+        <div class="card"><h3>During Setup</h3><p>Use accurate account details, protect your password, and review any verification prompt. This is especially important when using local payment methods.</p></div>
+        <div class="card"><h3>After Login</h3><p>Review bonus terms, payment limits, support options, and update notices before using wallet features or promotions.</p></div>
+      </div>
+    </section>
+    ${localIntentSection(site)}
+    <section class="band faq">
+      <h2>${escapeHtml(article.title)} FAQ</h2>
+      <details open><summary>Is this guide for Pakistan users?</summary><p>Yes. It references Pakistan payment methods, Android APK details, account setup, and common local search questions.</p></details>
+      <details><summary>Should users check the latest version?</summary><p>Yes. Version, size, offer text, and payment notes can change, so users should compare the current page details with in-app information.</p></details>
+      <details><summary>Where should beginners continue?</summary><p>Beginners should return to the home page, read the related guides, and use the register button only after understanding setup and payment notes.</p></details>
+    </section>`;
+}
+
 function renderDownloadLanding(site: SiteConfig, articles: Article[]) {
   return layout(
     site,
@@ -240,6 +323,7 @@ function renderDownloadLanding(site: SiteConfig, articles: Article[]) {
         ${articleCards(articles)}
       </div>
     </section>
+    ${localIntentSection(site)}
     <section id="faq" class="band faq">
       <h2>${escapeHtml(site.siteName)} FAQ</h2>
       <details open><summary>Is ${escapeHtml(site.siteName)} available for Android?</summary><p>The template presents ${escapeHtml(site.siteName)} as an Android APK guide with version and install information.</p></details>
@@ -266,6 +350,7 @@ function renderReviewMagazine(site: SiteConfig, articles: Article[]) {
       <aside class="card"><h3>Quick Facts</h3><p>Version: ${escapeHtml(site.appVersion)}</p><p>Size: ${escapeHtml(site.appSize)}</p><p>Offer: ${escapeHtml(site.offerText)}</p></aside>
     </section>
     <section class="band"><h2>Pros and Cons Framework</h2><div class="grid">${featureCards(site)}</div></section>
+    ${localIntentSection(site)}
     <section class="band"><h2>Review Articles</h2><div class="grid">${articleCards(articles, "Read review")}</div></section>`
   );
 }
@@ -285,6 +370,7 @@ function renderBonusGuide(site: SiteConfig, articles: Article[]) {
       </div>
     </section>
     <section class="band"><h2>Payment Methods</h2><div class="grid">${site.paymentMethods.map((method) => `<div class="card"><h3>${escapeHtml(method)}</h3><p>Bonus users should confirm method availability and promotion terms before depositing.</p></div>`).join("")}</div></section>
+    ${localIntentSection(site)}
     <section class="band"><h2>Bonus Guides</h2><div class="grid">${articleCards(articles, "Read bonus guide")}</div></section>`
   );
 }
@@ -303,6 +389,7 @@ function renderHowToTutorial(site: SiteConfig, articles: Article[]) {
         <div class="step"><h3>Start Playing</h3><p>Read game rules, start small, and review promotion terms before using rewards.</p></div>
       </div>
     </section>
+    ${localIntentSection(site)}
     <section class="band"><h2>Tutorial Library</h2><div class="grid">${articleCards(articles, "Open tutorial")}</div></section>`
   );
 }
@@ -324,6 +411,7 @@ function renderUpdatesHub(site: SiteConfig, articles: Article[]) {
       </div>
       <aside class="card"><h3>Refresh Checklist</h3><p>Update version, size, bonus text, feature notes, FAQ, sitemap, and robots after each campaign change.</p></aside>
     </section>
+    ${localIntentSection(site)}
     <section class="band"><h2>Update Articles</h2><div class="grid">${articleCards(articles, "Read update")}</div></section>`
   );
 }
@@ -362,9 +450,21 @@ export function renderBlogPost(site: SiteConfig, article: Article) {
   return layout(
     site,
     `/blog/${article.slug}/`,
-    `<article class="band"><p><strong>${escapeHtml(article.date)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>`,
+    `<article class="band"><p><strong>Updated ${escapeHtml(lastModified)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>${articleExpansion(site, article)}`,
     `${article.title} - ${site.siteName}`,
-    article.description
+    article.description,
+    [
+      faqSchema([
+        {
+          question: `Is ${article.title} for Pakistan users?`,
+          answer: `Yes. The guide is written around Pakistan APK, account, payment, and update search intent for ${site.siteName}.`
+        },
+        {
+          question: `Should users check current ${site.siteName} details?`,
+          answer: "Yes. Version, file size, promotion, and payment details can change, so users should compare the page with current in-app information."
+        }
+      ])
+    ]
   );
 }
 
@@ -394,6 +494,17 @@ export function renderKeywordPage(site: SiteConfig, keyword: string, articles: A
       </div>
     </section>
     <section class="band">
+      <h2>How to Use This ${escapeHtml(keyword)} Page</h2>
+      <p>Most Pakistan users searching for ${escapeHtml(keyword)} want a direct answer first, then proof that the page is current. This page highlights the app version, Android setup path, registration flow, local payment context, and bonus checks so users do not have to jump between unrelated pages.</p>
+      <div class="steps">
+        <div class="step"><h3>Check app details</h3><p>Compare ${escapeHtml(site.siteName)} version ${escapeHtml(site.appVersion)}, file size ${escapeHtml(site.appSize)}, Android support, and the official-looking download path.</p></div>
+        <div class="step"><h3>Review account setup</h3><p>Use a secure password, keep login details private, and confirm that any mobile verification screen matches your expected account flow.</p></div>
+        <div class="step"><h3>Read payment notes</h3><p>For Pakistan users, payment intent usually includes ${escapeHtml(site.paymentMethods.join(", "))}. Always check current limits and timing before deposit or withdrawal.</p></div>
+        <div class="step"><h3>Verify bonus terms</h3><p>Promotion text can change quickly. Confirm welcome rewards, first deposit rules, referral bonuses, and withdrawal requirements before relying on an offer.</p></div>
+      </div>
+    </section>
+    ${localIntentSection(site)}
+    <section class="band">
       <h2>Recommended ${escapeHtml(site.siteName)} Articles</h2>
       <div class="grid">
         ${articleCards(relatedArticles)}
@@ -406,7 +517,23 @@ export function renderKeywordPage(site: SiteConfig, keyword: string, articles: A
       <details><summary>Where should new users start?</summary><p>Start with the register button, then review the supporting guides before using payment features.</p></details>
     </section>`,
     `${keyword} Pakistan Guide - ${site.siteName}`,
-    `${site.siteName} keyword guide for ${keyword}, APK download, registration, payment methods, and Pakistan user questions.`
+    `${site.siteName} keyword guide for ${keyword}, APK download, registration, payment methods, and Pakistan user questions.`,
+    [
+      faqSchema([
+        {
+          question: `What is the best page for ${keyword}?`,
+          answer: `This page summarizes ${site.siteName} APK, registration, payment, update, and Pakistan user intent for ${keyword}.`
+        },
+        {
+          question: `Is ${keyword} updated for Pakistan users?`,
+          answer: `Yes. It references Pakistan payment methods, Android APK details, local account setup, and ${site.siteName} update information.`
+        },
+        {
+          question: `Where should new ${site.siteName} users start?`,
+          answer: "New users should review setup and payment notes first, then use the register button only after understanding account and bonus terms."
+        }
+      ])
+    ]
   );
 }
 
@@ -422,7 +549,7 @@ export function renderSitemap(site: SiteConfig, articles: Article[]) {
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((url) => `  <url><loc>${baseUrl}${url}</loc></url>`).join("\n")}
+${urls.map((url) => `  <url><loc>${baseUrl}${url}</loc><lastmod>${lastModified}</lastmod></url>`).join("\n")}
 </urlset>`;
 }
 
