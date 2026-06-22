@@ -15,6 +15,7 @@ export type SiteConfig = {
   appVersion: string;
   appSize: string;
   downloadUrl: string;
+  authUrl?: string;
   offerText: string;
   paymentMethods: string[];
   featureBullets: string[];

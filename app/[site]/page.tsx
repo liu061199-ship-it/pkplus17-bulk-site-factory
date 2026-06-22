@@ -3,6 +3,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSite, getSiteArticles, siteConfigs } from "@/lib/site-data";
 
+function keywordSlug(keyword: string) {
+  return keyword
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function generateStaticParams() {
   return siteConfigs.map((site) => ({ site: site.slug }));
 }
@@ -67,6 +75,23 @@ export default function SiteHomePage({ params }: { params: { site: string } }) {
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 py-10 lg:grid-cols-[1fr_320px]">
         <div className="grid gap-5">
+          <section className="rounded-lg border border-line bg-white p-5">
+            <h2 className="text-3xl font-black">{site.siteName} Keyword Focus</h2>
+            <p className="mt-3 text-slate-600">
+              This site targets separate Pakistan search intents with focused keyword pages.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {site.keywords.map((keyword) => (
+                <Link
+                  key={keyword}
+                  href={`/${site.slug}/keywords/${keywordSlug(keyword)}`}
+                  className="rounded-lg bg-slate-100 px-3 py-2 font-bold text-ink"
+                >
+                  {keyword}
+                </Link>
+              ))}
+            </div>
+          </section>
           <section className="rounded-lg border border-line bg-white p-5">
             <h2 className="text-3xl font-black">PKPlus Pakistan Guide Structure</h2>
             <p className="mt-3 text-slate-600">{site.description}</p>

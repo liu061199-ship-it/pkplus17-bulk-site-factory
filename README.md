@@ -127,6 +127,21 @@ npm run generate
 npm run build
 ```
 
+## Login and Register Buttons
+
+Generated static pages include Login and Register buttons in the site header and hero CTA area.
+Both buttons use each site's `authUrl` from `sites/sites.json`, with `downloadUrl` as a fallback, so the destination stays configuration-driven for bulk edits.
+
+## Keyword Landing Pages
+
+Each site automatically generates keyword landing pages from its `keywords` array:
+
+```text
+output/<site-slug>/keywords/<keyword-slug>/index.html
+```
+
+These pages are added to `sitemap.xml` and linked from the home page keyword focus section, so each domain can target a separate keyword cluster.
+
 ## 如何批量生成
 
 ```bash

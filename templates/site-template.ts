@@ -17,9 +17,32 @@ function jsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
+export function keywordSlug(keyword: string) {
+  return keyword
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function keywordLinks(site: SiteConfig) {
+  return site.keywords
+    .map((keyword) => `<a href="/keywords/${escapeHtml(keywordSlug(keyword))}/">${escapeHtml(keyword)}</a>`)
+    .join("");
+}
+
+function keywordClusterSection(site: SiteConfig) {
+  return `<section class="band">
+      <h2>${escapeHtml(site.siteName)} Keyword Focus</h2>
+      <p>This page is mapped around Pakistan search intent for ${escapeHtml(site.siteName)}, with supporting pages for each keyword cluster.</p>
+      <div class="toc keyword-cloud">${keywordLinks(site)}</div>
+    </section>`;
+}
+
 function layout(site: SiteConfig, path: string, body: string, pageTitle = site.title, pageDescription = site.description) {
   const baseUrl = `https://${site.domain}`;
   const canonical = `${baseUrl}${path}`;
+  const authUrl = site.authUrl || site.downloadUrl;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -60,7 +83,11 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
     .brand { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 900; }
     .logo { width: 42px; height: 42px; border-radius: 10px; background: #fff; display: grid; place-items: center; overflow: hidden; color: var(--brand); }
     .logo img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-actions { display: flex; align-items: center; gap: 18px; }
     .nav-links { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+    .auth-links { display: flex; align-items: center; gap: 8px; }
+    .auth-link { min-height: 38px; padding: 9px 13px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .28); font-size: 14px; font-weight: 900; }
+    .auth-link.register { background: #22c55e; border-color: #22c55e; color: #062111; }
     .hero { max-width: 1180px; margin: 0 auto; padding: 42px min(5vw, 56px) 48px; display: grid; grid-template-columns: minmax(0, 1.2fr) 360px; gap: 26px; align-items: center; }
     .eyebrow { color: #b9f7d0; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
     h1 { font-size: clamp(36px, 7vw, 68px); line-height: .98; margin: 12px 0 18px; letter-spacing: 0; }
@@ -79,6 +106,7 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
     .band { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 24px; margin-bottom: 20px; }
     .toc { display: flex; flex-wrap: wrap; gap: 10px; }
     .toc a { padding: 9px 12px; border-radius: 8px; background: var(--soft); text-decoration: none; }
+    .keyword-cloud a { color: var(--ink); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
     .split { display: grid; grid-template-columns: minmax(0, 1.1fr) 320px; gap: 18px; align-items: start; }
     .card { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 20px; }
@@ -95,6 +123,8 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
       .hero { grid-template-columns: 1fr; padding-top: 26px; }
       .split { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .auth-links { gap: 6px; }
+      .auth-link { min-height: 36px; padding: 8px 10px; }
       .apk-card dl { grid-template-columns: 1fr; }
     }
   </style>
@@ -103,7 +133,10 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
   <header>
     <nav>
       <a class="brand" href="/"><span class="logo">${site.logo ? `<img src="${escapeHtml(site.logo)}" alt="${escapeHtml(site.siteName)} logo" />` : escapeHtml(site.siteName.charAt(0))}</span>${escapeHtml(site.siteName)}</a>
-      <span class="nav-links"><a href="/about/">About</a><a href="/blog/">Blog</a><a href="/contact/">Contact</a></span>
+      <span class="nav-actions">
+        <span class="nav-links"><a href="/about/">About</a><a href="/blog/">Blog</a><a href="/contact/">Contact</a></span>
+        <span class="auth-links"><a class="auth-link" href="${escapeHtml(authUrl)}" rel="nofollow">Login</a><a class="auth-link register" href="${escapeHtml(authUrl)}" rel="nofollow">Register</a></span>
+      </span>
     </nav>
     <section class="hero">
       <div>
@@ -113,6 +146,8 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
         <div class="cta-row">
           <a class="button" href="${escapeHtml(site.downloadUrl)}">Download APK</a>
           <a class="button secondary" href="#install">Install Guide</a>
+          <a class="button secondary" href="${escapeHtml(authUrl)}" rel="nofollow">Login</a>
+          <a class="button" href="${escapeHtml(authUrl)}" rel="nofollow">Register</a>
         </div>
       </div>
       <aside class="apk-card">
@@ -128,7 +163,7 @@ function layout(site: SiteConfig, path: string, body: string, pageTitle = site.t
       </aside>
     </section>
   </header>
-  <main>${body}</main>
+  <main>${path === "/" ? `${keywordClusterSection(site)}${body}` : body}</main>
   <footer>(c) ${new Date().getFullYear()} ${escapeHtml(site.siteName)}. Informational guide for Pakistan users.</footer>
 </body>
 </html>`;
@@ -333,9 +368,58 @@ export function renderBlogPost(site: SiteConfig, article: Article) {
   );
 }
 
+export function renderKeywordPage(site: SiteConfig, keyword: string, articles: Article[]) {
+  const slug = keywordSlug(keyword);
+  const relatedArticles = articles.slice(0, 4);
+
+  return layout(
+    site,
+    `/keywords/${slug}/`,
+    `<section class="band">
+      <span class="pill">Keyword Landing Page</span>
+      <h1>${escapeHtml(keyword)} Pakistan Guide</h1>
+      <p>${escapeHtml(site.description)}</p>
+      <p>This page targets users searching for <strong>${escapeHtml(keyword)}</strong> and connects them to the most relevant ${escapeHtml(site.siteName)} APK, registration, payment, and update guides.</p>
+      <div class="cta-row">
+        <a class="button" href="${escapeHtml(site.authUrl || site.downloadUrl)}" rel="nofollow">Register</a>
+        <a class="button secondary" href="/blog/">Read Guides</a>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Search Intent for ${escapeHtml(keyword)}</h2>
+      <div class="grid">
+        <div class="card"><h3>Download Intent</h3><p>Users want APK version, Android size, install notes, and safe source checks before opening the app.</p></div>
+        <div class="card"><h3>Account Intent</h3><p>Users need login, registration, verification, password, and account setup information in a clear order.</p></div>
+        <div class="card"><h3>Payment Intent</h3><p>Pakistan users compare EasyPaisa, JazzCash, bank transfer, withdrawal timing, and promotion rules.</p></div>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Recommended ${escapeHtml(site.siteName)} Articles</h2>
+      <div class="grid">
+        ${articleCards(relatedArticles)}
+      </div>
+    </section>
+    <section class="band faq">
+      <h2>${escapeHtml(keyword)} FAQ</h2>
+      <details open><summary>What is the best page for ${escapeHtml(keyword)}?</summary><p>This keyword page gives a focused summary and links to deeper ${escapeHtml(site.siteName)} guides.</p></details>
+      <details><summary>Is this page updated for Pakistan users?</summary><p>Yes. The content references Pakistan payment methods, Android APK information, and local account setup questions.</p></details>
+      <details><summary>Where should new users start?</summary><p>Start with the register button, then review the supporting guides before using payment features.</p></details>
+    </section>`,
+    `${keyword} Pakistan Guide - ${site.siteName}`,
+    `${site.siteName} keyword guide for ${keyword}, APK download, registration, payment methods, and Pakistan user questions.`
+  );
+}
+
 export function renderSitemap(site: SiteConfig, articles: Article[]) {
   const baseUrl = `https://${site.domain}`;
-  const urls = ["/", "/about/", "/contact/", "/blog/", ...articles.map((article) => `/blog/${article.slug}/`)];
+  const urls = [
+    "/",
+    "/about/",
+    "/contact/",
+    "/blog/",
+    ...articles.map((article) => `/blog/${article.slug}/`),
+    ...site.keywords.map((keyword) => `/keywords/${keywordSlug(keyword)}/`)
+  ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((url) => `  <url><loc>${baseUrl}${url}</loc></url>`).join("\n")}

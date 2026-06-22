@@ -114,6 +114,7 @@ function rowToSite(headers: string[], row: string[], rowNumber: number): SiteCon
     appVersion: record.appVersion,
     appSize: record.appSize,
     downloadUrl: record.downloadUrl,
+    authUrl: record.authUrl || record.downloadUrl,
     offerText: record.offerText,
     paymentMethods: splitList(record.paymentMethods),
     featureBullets: splitList(record.featureBullets),

@@ -7,8 +7,10 @@ import {
   renderBlogPost,
   renderContact,
   renderHome,
+  renderKeywordPage,
   renderRobots,
-  renderSitemap
+  renderSitemap,
+  keywordSlug
 } from "../templates/site-template";
 
 const root = process.cwd();
@@ -44,6 +46,13 @@ async function generateSite(site: SiteConfig, allArticles: Article[]) {
     await writePage(
       path.join(siteOutput, "blog", article.slug, "index.html"),
       renderBlogPost(site, article)
+    );
+  }
+
+  for (const keyword of site.keywords) {
+    await writePage(
+      path.join(siteOutput, "keywords", keywordSlug(keyword), "index.html"),
+      renderKeywordPage(site, keyword, siteArticles)
     );
   }
 
