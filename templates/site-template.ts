@@ -17,7 +17,7 @@ function jsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-const lastModified = "2026-06-22";
+const lastModified = "2026-06-25";
 
 export function keywordSlug(keyword: string) {
   return keyword
@@ -38,6 +38,17 @@ function keywordClusterSection(site: SiteConfig) {
       <h2>${escapeHtml(site.siteName)} Keyword Focus</h2>
       <p>This page is mapped around Pakistan search intent for ${escapeHtml(site.siteName)}, with supporting pages for each keyword cluster.</p>
       <div class="toc keyword-cloud">${keywordLinks(site)}</div>
+    </section>`;
+}
+
+function primaryKeywordSection(site: SiteConfig) {
+  const primaryKeyword = site.keywords[0];
+  if (!primaryKeyword) return "";
+
+  return `<section class="band">
+      <h2>Main ${escapeHtml(site.siteName)} Keyword Hub</h2>
+      <p>Use the primary keyword page when you need the most direct summary for ${escapeHtml(primaryKeyword)}, APK checks, account setup, Pakistan payment notes, and related tutorials.</p>
+      <p><a class="button" href="/keywords/${escapeHtml(keywordSlug(primaryKeyword))}/">Open ${escapeHtml(primaryKeyword)} guide</a></p>
     </section>`;
 }
 
@@ -440,7 +451,7 @@ export function renderBlogList(site: SiteConfig, articles: Article[]) {
   return layout(
     site,
     "/blog/",
-    `<section class="band"><h1>${escapeHtml(site.siteName)} Guides</h1><p>Supporting articles for APK download, registration, payment methods, features, and FAQ content.</p></section><section class="grid">${articles.map((article) => `<article class="card"><h2>${escapeHtml(article.title)}</h2><p>${escapeHtml(article.description)}</p><a href="/blog/${escapeHtml(article.slug)}/">Read guide</a></article>`).join("")}</section>`,
+    `<section class="band"><h1>${escapeHtml(site.siteName)} Guides</h1><p>Supporting articles for APK download, registration, payment methods, features, and FAQ content.</p></section>${primaryKeywordSection(site)}<section class="grid">${articles.map((article) => `<article class="card"><h2>${escapeHtml(article.title)}</h2><p>${escapeHtml(article.description)}</p><a href="/blog/${escapeHtml(article.slug)}/">Read guide</a></article>`).join("")}</section>`,
     `${site.siteName} Guides and APK Tutorials`,
     `Read ${site.siteName} APK download, registration, payment, feature, and FAQ guides.`
   );
@@ -450,7 +461,7 @@ export function renderBlogPost(site: SiteConfig, article: Article) {
   return layout(
     site,
     `/blog/${article.slug}/`,
-    `<article class="band"><p><strong>Updated ${escapeHtml(lastModified)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>${articleExpansion(site, article)}`,
+    `<article class="band"><p><strong>Updated ${escapeHtml(lastModified)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>${primaryKeywordSection(site)}${articleExpansion(site, article)}`,
     `${article.title} - ${site.siteName}`,
     article.description,
     [
