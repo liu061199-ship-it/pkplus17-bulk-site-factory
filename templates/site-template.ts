@@ -17,7 +17,7 @@ function jsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-const lastModified = "2026-06-30";
+const lastModified = "2026-07-01";
 
 export function keywordSlug(keyword: string) {
   return keyword
