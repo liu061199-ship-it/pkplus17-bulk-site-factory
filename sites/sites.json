@@ -47,7 +47,8 @@
       "pkplus17-apk-security-check-june-28",
       "pkplus17-apk-android-update-june-29",
       "pkplus17-apk-download-check-june-30",
-      "pkplus17-apk-version-check-july-1"
+      "pkplus17-apk-version-check-july-1",
+      "pkplus17-apk-install-safety-july-2"
     ]
   },
   {
@@ -98,7 +99,8 @@
       "pkplus17-game-lobby-review-june-28",
       "pkplus17-game-review-intent-june-29",
       "pkplus17-game-feature-check-june-30",
-      "pkplus17-game-mobile-review-july-1"
+      "pkplus17-game-mobile-review-july-1",
+      "pkplus17-game-search-signal-july-2"
     ]
   },
   {
@@ -150,7 +152,8 @@
       "pkplus17-download-index-request-june-28",
       "pkplus17-download-search-path-june-29",
       "pkplus17-download-index-monitor-june-30",
-      "pkplus17-download-tutorial-map-july-1"
+      "pkplus17-download-tutorial-map-july-1",
+      "pkplus17-download-crawl-followup-july-2"
     ]
   },
   {
@@ -202,7 +205,8 @@
       "pkplus17-bonus-eligibility-june-28",
       "pkplus17-promo-terms-june-29",
       "pkplus17-bonus-risk-check-june-30",
-      "pkplus17-bonus-claim-check-july-1"
+      "pkplus17-bonus-claim-check-july-1",
+      "pkplus17-bonus-trust-check-july-2"
     ]
   },
   {
@@ -253,7 +257,8 @@
       "pkplus17-pakistan-search-update-june-28",
       "pkplus17-pakistan-market-watch-june-29",
       "pkplus17-pakistan-update-brief-june-30",
-      "pkplus17-pakistan-search-brief-july-1"
+      "pkplus17-pakistan-search-brief-july-1",
+      "pkplus17-pakistan-visibility-brief-july-2"
     ]
   }
 ]
