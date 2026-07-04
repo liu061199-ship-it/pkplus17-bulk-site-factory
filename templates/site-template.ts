@@ -52,6 +52,19 @@ function primaryKeywordSection(site: SiteConfig) {
     </section>`;
 }
 
+function priorityKeywordSection(site: SiteConfig) {
+  const priorityKeywords = site.keywords.slice(0, 3);
+  if (priorityKeywords.length === 0) return "";
+
+  return `<section class="band">
+      <h2>Priority ${escapeHtml(site.siteName)} Search Paths</h2>
+      <p>These internal links connect the strongest Pakistan search paths for ${escapeHtml(site.siteName)} so users and crawlers can reach the focused keyword pages from supporting guides.</p>
+      <div class="toc keyword-cloud">${priorityKeywords
+        .map((keyword) => `<a href="/keywords/${escapeHtml(keywordSlug(keyword))}/">${escapeHtml(keyword)} guide</a>`)
+        .join("")}</div>
+    </section>`;
+}
+
 function breadcrumbSchema(site: SiteConfig, path: string, pageTitle: string) {
   const baseUrl = `https://${site.domain}`;
   const items = [
@@ -451,7 +464,7 @@ export function renderBlogList(site: SiteConfig, articles: Article[]) {
   return layout(
     site,
     "/blog/",
-    `<section class="band"><h1>${escapeHtml(site.siteName)} Guides</h1><p>Supporting articles for APK download, registration, payment methods, features, and FAQ content.</p></section>${primaryKeywordSection(site)}<section class="grid">${articles.map((article) => `<article class="card"><h2>${escapeHtml(article.title)}</h2><p>${escapeHtml(article.description)}</p><a href="/blog/${escapeHtml(article.slug)}/">Read guide</a></article>`).join("")}</section>`,
+    `<section class="band"><h1>${escapeHtml(site.siteName)} Guides</h1><p>Supporting articles for APK download, registration, payment methods, features, and FAQ content.</p></section>${primaryKeywordSection(site)}${priorityKeywordSection(site)}<section class="grid">${articles.map((article) => `<article class="card"><h2>${escapeHtml(article.title)}</h2><p>${escapeHtml(article.description)}</p><a href="/blog/${escapeHtml(article.slug)}/">Read guide</a></article>`).join("")}</section>`,
     `${site.siteName} Guides and APK Tutorials`,
     `Read ${site.siteName} APK download, registration, payment, feature, and FAQ guides.`
   );
@@ -461,7 +474,7 @@ export function renderBlogPost(site: SiteConfig, article: Article) {
   return layout(
     site,
     `/blog/${article.slug}/`,
-    `<article class="band"><p><strong>Updated ${escapeHtml(lastModified)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>${primaryKeywordSection(site)}${articleExpansion(site, article)}`,
+    `<article class="band"><p><strong>Updated ${escapeHtml(lastModified)}</strong></p><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.description)}</p><p>${escapeHtml(article.content)}</p><p><a class="button" href="/">Back to ${escapeHtml(site.siteName)}</a></p></article>${primaryKeywordSection(site)}${priorityKeywordSection(site)}${articleExpansion(site, article)}`,
     `${article.title} - ${site.siteName}`,
     article.description,
     [
