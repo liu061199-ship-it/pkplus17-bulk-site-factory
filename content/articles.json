@@ -460,5 +460,40 @@
     "description": "A focused update for the visible pk17 query signal in Pakistan, including local intent, trust wording, and internal link direction.",
     "date": "2026-07-04",
     "content": "The visible GSC query is pk17, so this page clarifies the relationship between PK17 shorthand and PKPlus17 Pakistan research intent. Users may search short brand terms when they want the official-looking guide, APK context, login route, or local payment expectations. Keep the wording natural, link back to the main Pakistan guide, and avoid overusing the exact query."
+  },
+  {
+    "slug": "pkplus17-apk-zero-signal-refresh-july-5",
+    "title": "PKPlus17 APK Zero Signal Refresh Checklist",
+    "description": "A July 2026 refresh checklist for PKPlus17 APK pages with no current GSC impressions, focused on clearer Android and Pakistan download intent.",
+    "date": "2026-07-05",
+    "content": "When an APK domain has no impressions, the next update should make the page easier to understand rather than stuffing more keywords. Keep the Android install path visible, repeat the app version and file size naturally, link to the download and safety guides, and explain why Pakistan users should verify the source before account setup."
+  },
+  {
+    "slug": "pkplus17-game-top-position-followup-july-5",
+    "title": "PKPlus17 Game Top Position Follow-Up",
+    "description": "A focused follow-up for PKPlus17 Game after early GSC visibility, covering feature intent, review structure, and Pakistan user questions.",
+    "date": "2026-07-05",
+    "content": "PKPlus17 Game still shows a small but strong average position signal. The safe move is to reinforce review intent: explain the game lobby, APK context, account flow, payment expectations, and responsible bonus checks in one article. Avoid broad rewrites until query data becomes more specific."
+  },
+  {
+    "slug": "pkplus17-download-discovered-not-indexed-july-5",
+    "title": "PKPlus17 Download Discovered Not Indexed Notes",
+    "description": "Indexing follow-up for the PKPlus17 download keyword page after Google moved it to discovered but not indexed.",
+    "date": "2026-07-05",
+    "content": "The download keyword page has moved from unknown to discovered but not indexed. That means Google has seen the URL through the sitemap but has not crawled it yet. Keep internal links steady from the blog, avoid changing the target URL, and continue adding related download content that points back to the keyword guide."
+  },
+  {
+    "slug": "pkplus17-guide-early-visibility-july-5",
+    "title": "PKPlus17 Guide Early Visibility Follow-Up",
+    "description": "A July 2026 guide-site update after early visibility, focused on FAQ intent, registration questions, and Pakistan user trust checks.",
+    "date": "2026-07-05",
+    "content": "PKPlus17 Guide now has early GSC visibility, so the page should keep a clear FAQ angle. Answer what PKPlus17 is, where users check registration, how APK and bonus terms connect, and what Pakistan users should verify before login. This helps the guide domain stay different from game review and download pages."
+  },
+  {
+    "slug": "pk17-pakistan-brand-signal-july-5",
+    "title": "PK17 Pakistan Brand Signal Update",
+    "description": "A focused update for the visible pk17 query signal, connecting short brand searches to PKPlus17 Pakistan guidance.",
+    "date": "2026-07-05",
+    "content": "The short query pk17 remains the only visible query in GSC. Use it as a brand shorthand, not as a repeated keyword. Explain that Pakistan users may search pk17 when looking for PKPlus17 guides, APK notes, login direction, and local payment context, then route them to the most relevant pages with natural internal links."
   }
 ]
