@@ -52,7 +52,8 @@
       "pkplus17-apk-pakistan-install-july-4",
       "pkplus17-apk-zero-signal-refresh-july-5",
       "pkplus17-apk-crawl-support-july-6",
-      "pkplus17-apk-mobile-clarity-july-7"
+      "pkplus17-apk-mobile-clarity-july-7",
+      "pkplus17-apk-zero-impression-support-july-8"
     ]
   },
   {
@@ -108,7 +109,8 @@
       "pkplus17-game-rank-signal-july-4",
       "pkplus17-game-top-position-followup-july-5",
       "pkplus17-game-serp-hold-july-6",
-      "pkplus17-game-review-depth-july-7"
+      "pkplus17-game-review-depth-july-7",
+      "pkplus17-game-impression-hold-july-8"
     ]
   },
   {
@@ -166,7 +168,8 @@
       "pkplus17-download-discovered-not-indexed-july-5",
       "pkplus17-download-discovery-hold-july-6",
       "pkplus17-download-index-stability-july-7",
-      "pkplus17-download-apk-pakistan-support-july-7"
+      "pkplus17-download-apk-pakistan-support-july-7",
+      "pkplus17-download-crawl-depth-july-8"
     ]
   },
   {
@@ -223,7 +226,8 @@
       "pkplus17-guide-faq-intent-july-4",
       "pkplus17-guide-early-visibility-july-5",
       "pkplus17-guide-login-register-faq-july-6",
-      "pkplus17-guide-register-login-intent-july-7"
+      "pkplus17-guide-register-login-intent-july-7",
+      "pkplus17-guide-rank-hold-july-8"
     ]
   },
   {
@@ -279,7 +283,8 @@
       "pk17-pakistan-query-optimization-july-4",
       "pk17-pakistan-brand-signal-july-5",
       "pk17-query-support-july-6",
-      "pk17-pakistan-local-trust-july-7"
+      "pk17-pakistan-local-trust-july-7",
+      "pk17-pakistan-query-depth-july-8"
     ]
   }
 ]
