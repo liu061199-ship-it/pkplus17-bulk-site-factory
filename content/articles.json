@@ -642,5 +642,40 @@
     "description": "A July 9 Pakistan-market update focused on pk17 shorthand, local search intent, trust signals, and internal routing.",
     "date": "2026-07-09",
     "content": "The visible query remains pk17, so the Pakistan site should use the shorthand naturally and explain the broader PKPlus17 context. Users may search pk17 when they want APK details, login direction, registration notes, payment context, or bonus checks. Keep the structure official-looking and route visitors to the best matching guide pages."
+  },
+  {
+    "slug": "pkplus17-apk-zero-signal-entry-july-10",
+    "title": "PKPlus17 APK Zero Signal Entry July 10",
+    "description": "A July 10 APK update focused on Android download entry points, crawl clarity, and Pakistan mobile setup checks.",
+    "date": "2026-07-10",
+    "content": "The APK domain still has no reliable impressions, so the page should keep its Android entry path direct. Pakistan users need version, size, install safety, source checks, and account setup context before they use any register or login button. This update keeps APK intent separate from game review and bonus FAQ pages."
+  },
+  {
+    "slug": "pkplus17-game-review-stability-july-10",
+    "title": "PKPlus17 Game Review Stability July 10",
+    "description": "A July 10 PKPlus17 Game review update focused on stable SERP visibility, lobby checks, and Pakistan comparison intent.",
+    "date": "2026-07-10",
+    "content": "The game site still holds a small visibility signal, so the priority is stability. Keep the review structure consistent, explain the lobby, account flow, payment context, and support expectations, and avoid broad title changes while the query set is still limited. Users comparing Pakistan game apps need practical checks, not repeated download wording."
+  },
+  {
+    "slug": "pkplus17-download-discovery-support-july-10",
+    "title": "PKPlus17 Download Discovery Support July 10",
+    "description": "A July 10 download support article focused on discovered-not-indexed status, sitemap visibility, stable URLs, and Pakistan setup intent.",
+    "date": "2026-07-10",
+    "content": "The PKPlus17 download keyword page remains the main indexing focus. Search Console recognizes the sitemap again but the URL is still discovered and not indexed, so the correct move is stability: keep the same keyword URL, keep sitemap inclusion current, and add supporting articles that point users back to APK download, registration, deposit, and withdrawal guidance."
+  },
+  {
+    "slug": "pkplus17-guide-click-support-july-10",
+    "title": "PKPlus17 Guide Click Support July 10",
+    "description": "A July 10 guide update built around the first visible click signal, registration intent, login FAQ, APK notes, and Pakistan user trust checks.",
+    "date": "2026-07-10",
+    "content": "The guide site now has the clearest Search Console signal, including one click and two impressions. The page should support that intent with practical FAQ answers around registration, login, APK context, bonus terms, and Pakistan payment checks. Keep the content concise, official-looking, and easy to scan on mobile."
+  },
+  {
+    "slug": "pk17-pakistan-query-support-july-10",
+    "title": "PK17 Pakistan Query Support July 10",
+    "description": "A July 10 Pakistan-market update supporting the visible pk17 query with local trust signals, APK routing, and guide links.",
+    "date": "2026-07-10",
+    "content": "The Pakistan site now has five impressions and still exposes pk17 as the only visible query. Treat pk17 as shorthand for users looking for PKPlus17 information, then route them to APK notes, download guidance, registration, login, bonus checks, and payment context. Keep the term natural and avoid unsupported ranking claims."
   }
 ]
