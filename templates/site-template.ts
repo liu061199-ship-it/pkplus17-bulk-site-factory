@@ -17,7 +17,7 @@ function jsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-const lastModified = "2026-07-10";
+const lastModified = "2026-07-23";
 
 export function keywordSlug(keyword: string) {
   return keyword
@@ -413,6 +413,7 @@ function renderHowToTutorial(site: SiteConfig, articles: Article[]) {
         <div class="step"><h3>Start Playing</h3><p>Read game rules, start small, and review promotion terms before using rewards.</p></div>
       </div>
     </section>
+    ${primaryKeywordSection(site)}
     ${localIntentSection(site)}
     <section class="band"><h2>Tutorial Library</h2><div class="grid">${articleCards(articles, "Open tutorial")}</div></section>`
   );

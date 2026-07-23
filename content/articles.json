@@ -677,5 +677,19 @@
     "description": "A July 10 Pakistan-market update supporting the visible pk17 query with local trust signals, APK routing, and guide links.",
     "date": "2026-07-10",
     "content": "The Pakistan site now has five impressions and still exposes pk17 as the only visible query. Treat pk17 as shorthand for users looking for PKPlus17 information, then route them to APK notes, download guidance, registration, login, bonus checks, and payment context. Keep the term natural and avoid unsupported ranking claims."
+  },
+  {
+    "slug": "pkplus17-download-index-request-followup-july-10",
+    "title": "PKPlus17 Download Index Request Follow-up July 10",
+    "description": "A July 10 follow-up for the PKPlus17 download keyword URL, focused on discovered-not-indexed status, homepage routing, and stronger internal links.",
+    "date": "2026-07-10",
+    "content": "Search Console still shows the PKPlus17 download keyword page as discovered but not indexed, with the sitemap recognized and no crawl time available. The next support step is to keep the target URL stable, strengthen homepage links to the download keyword guide, and connect related tutorials for APK setup, registration, deposit, withdrawal, and Pakistan payment checks. This article supports crawl depth without changing the keyword slug."
+  },
+  {
+    "slug": "pkplus17-download-url-recognition-july-23",
+    "title": "PKPlus17 Download URL Recognition Support July 23",
+    "description": "A July 23 support update for the PKPlus17 download keyword page after Search Console showed no reliable URL recognition.",
+    "date": "2026-07-23",
+    "content": "The priority page for PKPlus17 download needs clearer crawl support because Search Console did not show reliable URL recognition today. Keep the keyword URL unchanged, keep it visible from the tutorial hub, and connect it with APK setup, registration, deposit, withdrawal, and Pakistan payment guidance. This update gives users and crawlers another stable internal path back to the main PKPlus17 download guide without changing the target slug."
   }
 ]
